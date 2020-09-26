@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--配置别名-->
+    <typeAliases>
+        <!--1、配置别名的方式一：定义别名-->
+        <!--使用时忽略大小写-->
+        <!--<typeAlias alias="User" type="com.atguigu.pojo.User"></typeAlias>-->
+
+        <!--2、配置别名的方式二：扫描包-->
+        <!-- 为这个包下所有类起别名，默认是类名小写。但是如果该包下面不同子包里有同名的类，那么就会产生冲突，那么就要使用第三种方式-->
+        <!--<package name="com.atguigu"></package>-->
+
+        <!--3、注解的方式三：扫描包加注解方式-->
+        <package name="com.atguigu"></package>
+    </typeAliases>
+
+
+    <!--environments 表示配置数据库环境-->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?characterEncoding=UTF-8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123456"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--mybatis 是把sql配置到xml配置文件中，下面的配置就是告诉mybatis到哪里去加载sql的配置文件-->
+    <mappers>
+        <mapper resource="com/atguigu/mapper/UserMapper.xml"/>
+    </mappers>
+</configuration>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace是名称空间，它的取值必须是对应的接口的全类名-->
+<mapper namespace="com.atguigu.mapper.UserMapper">
+    <!--
+           select 标签用来配置select查询语句
+           id 属性配置一个唯一的标识
+           resultType 是查询后每一行记录封装的对象类型
+           #{id} 它是占位符 ?
+    -->
+    <select id="selectUserById" resultType="com.atguigu.pojo.User">
+      select `id`,`last_name` lastName,`sex` from t_user where id = #{id}
+    </select>
+
+    <!--因为这里指定的是oracle，我这里是无法执行的-->
+    <select id="queryUserAll" resultType="com.atguigu.pojo.User" databaseId="oracle">
+      select id,last_name lastName,sex from t_user where 2 = 2
+    </select>
+
+    <!--
+        1、优先执行databaseId
+        2、当databaseId没有匹配到数据库时，报错，not found
+        3、当多个databaseId没有匹配时，那么不带有databaseId的也会进行使用
+    -->
+    <select id="queryUserAll" resultType="com.atguigu.pojo.User">
+        select id,last_name lastName,sex from t_user
+    </select>
+
+    <update id="updateUserById" parameterType="com.atguigu.pojo.User">
+        update t_user set `last_name` = #{lastName},sex = #{sex} where id = #{id}
+    </update>
+
+    <delete id="deleteUserById" parameterType="int">
+        delete from t_user where id = #{id}
+    </delete>
+    <!--
+        插入数据后得到数据的id,得到主键自增id
+        useGeneratedKeys="true":得到主键id
+        keyProperty="id":得到主键id后要赋值到javaBean的id中
+    -->
+    <!--
+        selectKey:内部使用 select LAST_INSERT_ID(),也可以得到主键id
+        order:
+            AFTER:  之后
+            BEFORE: 之前
+        keyColumn:db中主键字段
+        keyProperty:javaBean中的属性
+        resultType: 主键的类型
+    -->
+
+    <insert id="insertUser" parameterType="user1">
+        <selectKey order="AFTER" keyColumn="id" keyProperty="id" resultType="int">
+            select LAST_INSERT_ID();
+        </selectKey>
+        insert into t_user(last_name,sex) value(#{lastName},#{sex})
+    </insert>
+
+    <select id="queryUserMapById" resultType="com.atguigu.pojo.User">
+        select id,last_name lastName,sex from t_user where id = #{id}
+    </select>
+
+
+
+
+</mapper>
+
